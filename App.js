@@ -1,35 +1,40 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Header from './src/components/Header.js';  
+import Cabecalho from './src/components/Cabecalho.js';
+import PessoaList from './src/components/PessoaList.js';
+
+import axios from 'axios';
 
 export default class App extends React.Component {
-  renderList() {
-    const names = [
-      'Anderson Hansen',
-      'Anderson Hansen',
-      'Anderson Hansen'
-    ];
 
-    const textElements = names.map(nome => {
-      return <Text> { nome } </Text>
+	constructor(props) {
+		super(props);
 
-    })
-    
-    return textElements;
-    
+		this.state = {
+			pessoas: []
+		};
 
+	}
 
+	// Executado logo após o primeiro render
+	componentDidMount() {
+		axios
+			.get('https://randomuser.me/api/?nat=br&results=5')
+			.then(response => {
+				const { results } = response.data;
+				// Sempre que for necessários atualizar um estado usamos o this.setState() (Não pode ser usado 'this.State = ...')
+				this.setState({
+					pessoas: results
+				});
+			})
+	}
 
-
-  }
-  render() {
-    return (
-      <View>
-        <Header title="Contatos"/>
-        
-        {/* É usado this por que declaramos a função dentro da própria classe */}
-        { this.renderList() }        
-      </View>
-    );
-  }
+	render() {
+		return (
+			<View>
+				<Cabecalho title="Contatos" />
+				<PessoaList pessoas={this.state.pessoas} />
+			</View>
+		);
+	}
 }
