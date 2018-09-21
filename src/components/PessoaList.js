@@ -10,11 +10,11 @@ export default class PessoaList extends Component {
 
     render() {
 
-        const { pessoas } = this.props;
+        const { pessoas, onPressList } = this.props;
 
         const textElements = pessoas.map((pessoa, index) => {
             return (
-                <PessoaListItem key={index} pessoa={pessoa} />
+                <PessoaListItem key={index} pessoa={pessoa} onPressListItem={onPressList}/>
             )
         })
 

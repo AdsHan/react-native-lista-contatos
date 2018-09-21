@@ -1,40 +1,43 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Cabecalho from './src/components/Cabecalho.js';
-import PessoaList from './src/components/PessoaList.js';
+import { StackNavigator }  from 'react-navigation';
+import PessoaPage from './src/pages/PessoaPage';
+import PessoaDetalhePage from './src/pages/PessoaDetalhePage';
 
-import axios from 'axios';
+import { capitalizePrimeiraLetra } from './src/util';
 
-export default class App extends React.Component {
-
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			pessoas: []
-		};
-
-	}
-
-	// Executado logo após o primeiro render
-	componentDidMount() {
-		axios
-			.get('https://randomuser.me/api/?nat=br&results=5')
-			.then(response => {
-				const { results } = response.data;
-				// Sempre que for necessários atualizar um estado usamos o this.setState() (Não pode ser usado 'this.State = ...')
-				this.setState({
-					pessoas: results
-				});
+export default StackNavigator ({
+	'Main': {
+		screen: PessoaPage
+	},
+	'PessoaDetalhe': {
+		screen:  PessoaDetalhePage,
+		// É possível passar uma função que devolve um objeto. A biblioteca sempre nos passa uma parâmetro com o que passamos no 'this.props.navigation.navigate('PessoaDetalhe', pageParams)';
+		navigationOptions: ( {navigation} ) => {
+			const pessoaNome = capitalizePrimeiraLetra(navigation.state.params.pessoa.name.first);
+			return ({
+				title: pessoaNome,
+				headerTitleStyle: {
+					fontSize: 30,
+					color: '#fff',
+					
+					
+				}					
 			})
+		}
 	}
-
-	render() {
-		return (
-			<View>
-				<Cabecalho title="Contatos" />
-				<PessoaList pessoas={this.state.pessoas} />
-			</View>
-		);
+}, {
+	// Configurações Globais
+	navigationOptions: {
+		title: 'Pessoas',
+		headerTintColor: '#fff',
+		headerStyle: {
+			backgroundColor: '#6ca2f7',
+		
+		},
+		headerTitleStyle: {
+			fontSize: 30,
+			color: '#fff',
+			flex: 1, 
+			textAlign: 'center'			
+		}	
 	}
-}
+});
