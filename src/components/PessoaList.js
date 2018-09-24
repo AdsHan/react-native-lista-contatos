@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View } from 'react-native'
+import { Text, StyleSheet, View, FlatList } from 'react-native'
 import PessoaListItem from './PessoaListItem';
 
 export default class PessoaList extends Component {
@@ -11,17 +11,33 @@ export default class PessoaList extends Component {
     render() {
 
         const { pessoas, onPressList } = this.props;
-
-        const textElements = pessoas.map((pessoa, index) => {
+        {/* 
+            Modo sem FlatList
+            
+            const textElements = pessoas.map((pessoa, index) => {
             return (
                 <PessoaListItem key={index} pessoa={pessoa} onPressListItem={onPressList}/>
             )
-        })
+
+            return (
+                <View style={styles.container}>
+                    {textElements}
+                </View>
+            )
+
+        */}
 
         return (
-            <View style={styles.container}>
-                {textElements}
-            </View>
+            // É possível utilizar o ScrollView mas por questões de performance não vamos utilizar (carrega todas as ocorrências em memória)
+            <FlatList
+                style={styles.container}
+                data={pessoas}
+                renderItem={({ item }) => (
+                    <PessoaListItem
+                        pessoa={item}
+                        onPressListItem={onPressList} />
+                )}
+                keyExtractor={item => item.login.uuid} />
         )
     }
 }
