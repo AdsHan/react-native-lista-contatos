@@ -1,4 +1,4 @@
 # React Native Lista de Contatos
 
-- This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
-- Use Random User Generator (https://randomuser.me/)
+- React Native App.
+- Acessa 'Random User Generator' (https://randomuser.me/) para buscar dados de usuários aleatórios. Posteriormente essas informações são exibidas.
